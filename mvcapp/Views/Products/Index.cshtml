@@ -1,0 +1,10 @@
+﻿@using mvcapp.Controllers;
+@model IEnumerable<Shared.ProductDto>
+@{
+    ViewData["Title"] = "Products Page";
+}
+
+
+<pre>
+@Json.Serialize(Model)
+</pre>
