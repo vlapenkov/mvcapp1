@@ -60,5 +60,7 @@ namespace mvcapp.Controllers
             // return new SignOutResult(new[] { "oidc", "Cookies" });
             return SignOut("Cookies", "oidc");
         }
+
+        
     }
 }

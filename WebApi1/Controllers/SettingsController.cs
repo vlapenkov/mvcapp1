@@ -10,6 +10,7 @@ namespace WebApi1.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
+
     public class SettingsController : ControllerBase
     {
         IConfiguration _configuration;

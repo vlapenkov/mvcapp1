@@ -49,7 +49,7 @@ namespace AspNetCoreIdentityServer.Configurations
                 {
                     ClientId = "mvc",
                     ClientName = "MVC Client",
-                    AllowedGrantTypes = GrantTypes.HybridAndClientCredentials,
+                    AllowedGrantTypes = {GrantType.Hybrid ,GrantType.ResourceOwnerPassword },
 
                     RequireConsent = false,
 
@@ -75,6 +75,7 @@ namespace AspNetCoreIdentityServer.Configurations
                     AlwaysIncludeUserClaimsInIdToken = true,
                     
                 }
+                
             };
         }
     }
