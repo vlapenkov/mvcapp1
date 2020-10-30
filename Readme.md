@@ -7,3 +7,4 @@
 1. Для IntegrationTestExample Предварительно IS4 должен быть запущен явно
 2. Для IntegrationTestExample2 mock dbContext и создания токена в схеме Test
 
+Ваня предлагает получать токен с Production среды и тестировать ее
