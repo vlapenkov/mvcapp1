@@ -33,9 +33,10 @@ namespace WebApi1
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+          
             services.AddDbContext<ProductsDbContext>(options =>
             options.UseNpgsql(Configuration.GetConnectionString("ProductsDatabase")));
-
+            
             services.AddTransient<ExampleJob>();
             //  services.AddSingleton<ITypeLoadHelper, SimpleTypeLoadHelper>();
 
@@ -44,14 +45,19 @@ namespace WebApi1
             // .AddAuthorization(options => options.AddPolicy("Founder", policy => policy.RequireClaim("Employee", "Mosalla")))
 
 
-            services.AddAuthentication("Bearer")
-                .AddJwtBearer("Bearer",options =>
-                {
-                    options.Authority = "http://localhost:5500";
-                    options.RequireHttpsMetadata = false;
-                    options.Audience = "Api1";
-                });
-            services.AddAuthorization();
+            services.AddAuthentication(options=> {
+                options.DefaultAuthenticateScheme = "Bearer";
+                options.DefaultChallengeScheme = "Bearer";
+            })
+                .AddJwtBearer("Bearer", options =>
+                 {
+                     options.Authority = "http://localhost:5500";
+                     options.RequireHttpsMetadata = false;
+                     options.Audience = "Api1";
+                 });
+
+
+           
             services.AddControllers();
             services.AddSwaggerGen();
         }

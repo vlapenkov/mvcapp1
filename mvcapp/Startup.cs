@@ -51,7 +51,7 @@ namespace mvcapp
             services.AddHttpContextAccessor();
             services.AddTransient<IExceptionHandler,DefaultExceptionHandler>();
             services.AddTransient<MyAccessTokenHandler>();
-          //  services.AddTransient<AccessTokenDelegatingHandler>();
+            //  services.AddTransient<AccessTokenDelegatingHandler>();
             //  JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 
             #region identity

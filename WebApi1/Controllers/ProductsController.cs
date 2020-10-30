@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -13,20 +14,20 @@ namespace WebApi1.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
-    [Authorize(AuthenticationSchemes ="Bearer")]
+    [Authorize(AuthenticationSchemes ="Bearer,Test")]
+    
     public class ProductsController : ControllerBase
     {
         private IMediator _mediator;
-       // private ProductsDbContext _dbContext;
+      
         public ProductsController(IMediator mediator)
         {
-            _mediator = mediator;
-        //    _dbContext = dbContext;
+            _mediator = mediator;       
         }
 
-        
-              
 
+
+     
         [HttpGet]
         public async Task<IEnumerable<ProductDto>> GetProducts()
         {
@@ -52,13 +53,12 @@ namespace WebApi1.Controllers
             return result;
         }
 
-        //private IEnumerable<ProductDto> products 
-        //    { get {
-
-        //        return _dbContext.Products.Select(p => new ProductDto { Id = p.Id, Name = p.Name }).ToList();
-        //    //yield return new ProductDto { Id = 1, Name = "First" };
-        //    //yield return new ProductDto { Id = 2, Name = "Second" };
-        //    }
-        //}
+        [HttpGet]
+        public async Task<string> GetUser()
+        {
+            var name =  User.Identity.Name;
+            var email = User.Claims.FirstOrDefault(claim => claim.Type == ClaimTypes.Email);
+            return name;
+        }
     }
 }

@@ -17,10 +17,13 @@ namespace Tests
         protected override IHostBuilder CreateHostBuilder()
         {
             var builder = Host.CreateDefaultBuilder().ConfigureWebHostDefaults(webBuilder =>
-            { webBuilder.UseStartup<Startup>().UseTestServer(); }
+            { webBuilder.UseStartup<Startup>().UseTestServer(); 
+            
+            
+            }
 
             ).ConfigureAppConfiguration((hostingContext, config) => {
-                config.AddJsonFile("appsettings.json", optional: false, reloadOnChange: false);
+                config.AddJsonFile("appsettings.Development.json", optional: false, reloadOnChange: false);
             });
             return builder;
         }

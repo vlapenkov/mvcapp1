@@ -1,4 +1,8 @@
 ﻿using IdentityModel.Client;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.AspNetCore.TestHost;
+using Microsoft.Extensions.DependencyInjection;
 using mvcapp;
 using Newtonsoft.Json;
 using Shared;
@@ -7,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using WebApi1;
@@ -14,20 +19,27 @@ using Xunit;
 
 namespace Tests
 {
-    public class IntegrationTestExample : IClassFixture<AppTestFixture<Startup>>
+    // Предложенный подход на сайте microsoft
+    //https://docs.microsoft.com/ru-ru/aspnet/core/test/integration-tests?view=aspnetcore-3.1
+    // Для таких тестов не надо запускать IS4 сервер (делется для TestAuthHandler)
+    // База данных in-memory
+
+    public class IntegrationTestExample2 : IClassFixture<CustomWebApplicationFactory<Startup>>
     {
         private readonly TokenClient _tokenClient;
         private readonly HttpClient _client;
-       // private readonly string _accessToken;
+        CustomWebApplicationFactory<Startup> _factory;
 
-        public IntegrationTestExample(AppTestFixture<Startup> factory)
+        public IntegrationTestExample2(CustomWebApplicationFactory<Startup> factory)
         {
-
-            _client = factory.CreateClient();
-            var disco = DiscoveryClient.GetAsync("http://localhost:5500").Result;
-            _tokenClient = new TokenClient(disco.TokenEndpoint, "mvc", "secret");
+            _factory = factory;
+            _client = _factory            
+        .CreateClient(new WebApplicationFactoryClientOptions
+        {
+            AllowAutoRedirect = false,
+        });
+            _client.DefaultRequestHeaders.Authorization =  new AuthenticationHeaderValue("Test");
            
-
         }
 
         /// <summary>
@@ -37,9 +49,7 @@ namespace Tests
         /// <returns></returns>
         [Fact]
         public async Task CanGetWeather()
-        {
-            var tokenResponse = await _tokenClient.RequestResourceOwnerPasswordAsync("test2@ya.ru", "123123");
-            _client.SetBearerToken(tokenResponse.AccessToken);
+        {                     
             // The endpoint or route of the controller action.
             var httpResponse = await _client.GetAsync("WeatherForecast");
             // Must be successful.
@@ -57,12 +67,14 @@ namespace Tests
 
         }
 
+        /// <summary>
+        /// Данный метод берет данные из endpoint, который сконфигурирован на in-memory database (см. CustomWebApplicationFactory)
+        /// </summary>
+        /// <returns></returns>
         [Fact]
         public async Task CanGetProducts()
         {
-            var tokenResponse = await _tokenClient.RequestResourceOwnerPasswordAsync("test2@ya.ru", "123123");
-            _client.SetBearerToken(tokenResponse.AccessToken);
-            // The endpoint or route of the controller action.
+            
             var httpResponse = await _client.GetAsync("/api/Products/GetProducts");
             // Must be successful.
             httpResponse.EnsureSuccessStatusCode();
@@ -75,7 +87,27 @@ namespace Tests
             Assert.Equal(HttpStatusCode.OK, httpResponse.StatusCode);
 
             Assert.NotEmpty(products);
-            Assert.Equal(5, products.Count());
+            Assert.Equal(4, products.Count());
+
+        }
+
+        [Fact]
+        public async Task CanGetUser()
+        {
+           
+            var httpResponse = await _client.GetAsync("/api/Products/GetUser");
+            // Must be successful.
+            httpResponse.EnsureSuccessStatusCode();
+
+            //// Deserialize and examine results.
+            var data = await httpResponse.Content.ReadAsStringAsync();
+            var userName = data;
+
+
+            Assert.Equal(HttpStatusCode.OK, httpResponse.StatusCode);
+
+            Assert.NotEmpty(userName);
+            Assert.Equal("test2", userName);
 
         }
     }
