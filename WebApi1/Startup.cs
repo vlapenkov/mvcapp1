@@ -45,19 +45,27 @@ namespace WebApi1
             // .AddAuthorization(options => options.AddPolicy("Founder", policy => policy.RequireClaim("Employee", "Mosalla")))
 
 
-            services.AddAuthentication(options=> {
-                options.DefaultAuthenticateScheme = "Bearer";
-                options.DefaultChallengeScheme = "Bearer";
-            })
-                .AddJwtBearer("Bearer", options =>
-                 {
-                     options.Authority = "http://localhost:5500";
-                     options.RequireHttpsMetadata = false;
-                     options.Audience = "Api1";
-                 });
+            services.AddAuthentication("Bearer")
+               .AddJwtBearer("Bearer", options =>
+               {
+                   options.Authority = "http://localhost:5500";
+                   options.RequireHttpsMetadata = false;
+                   options.Audience = "Api1";
+               });
+            services.AddAuthorization(
+                options =>
+                {
+                    options.AddPolicy("DefaultPolicy", policy =>
+                    {
+                        policy.AuthenticationSchemes.Add("Bearer");
+                        policy.RequireAuthenticatedUser();
+                      // policy.Requirements.Add(new MinimumAgeRequirement());
+                    });
+                }
+                );
 
 
-           
+
             services.AddControllers();
             services.AddSwaggerGen();
         }

@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 
-namespace WebApi1.Controllers
+namespace WebApi1.Web.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]

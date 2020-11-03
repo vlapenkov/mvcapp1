@@ -8,14 +8,15 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Shared;
-using Shared.Dto;
+using WebApi1.Contracts.Dto;
 
-namespace WebApi1.Controllers
+namespace WebApi1.Web.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
-    [Authorize(AuthenticationSchemes ="Bearer,Test")]
-    
+    //[Authorize(AuthenticationSchemes ="Bearer,Test")]
+    [Authorize(Policy = "DefaultPolicy")]
+
     public class ProductsController : ControllerBase
     {
         private IMediator _mediator;

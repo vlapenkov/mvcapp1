@@ -7,8 +7,9 @@ using Microsoft.Extensions.DependencyInjection;
 using mvc.services;
 using Refit;
 using Shared;
-using Shared.Interfaces;
+
 using System;
+using WebApi1.Contracts.Interfaces;
 
 namespace mvcapp
 {

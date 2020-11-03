@@ -3,8 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using WebApi1.Contracts.Dto;
 
-namespace Shared.Interfaces
+namespace WebApi1.Contracts.Interfaces
 {
    public interface IProductService
     {

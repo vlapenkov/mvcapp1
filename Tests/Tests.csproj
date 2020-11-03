@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
@@ -18,7 +18,9 @@
 
   
     <ItemGroup>
-      <ProjectReference Include="..\webapi1\webapi1.csproj" />
+     <!-- <ProjectReference Include="..\Shared\Shared.csproj" /> -->
+      <!--<ProjectReference Include="..\Webapi1.Contracts\Webapi1.Contracts.csproj" />-->
+      <ProjectReference Include="..\WebApi1\WebApi1.Web.csproj" />
     </ItemGroup>
   
 </Project>

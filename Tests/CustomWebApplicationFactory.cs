@@ -40,6 +40,18 @@ namespace Tests
                 .AddScheme<AuthenticationSchemeOptions, TestAuthHandler>(
                             "Test", options => { });
 
+                // используем аутентификационную схему test
+                services.AddAuthorization(
+               options =>
+               {
+                   options.AddPolicy("DefaultPolicy", policy =>
+                   {
+                       policy.AuthenticationSchemes.Add("Test");
+                       policy.RequireAuthenticatedUser();
+                        // policy.Requirements.Add(new MinimumAgeRequirement());
+                    });
+               }
+               );
                 var sp = services.BuildServiceProvider();
 
                 using (var scope = sp.CreateScope())

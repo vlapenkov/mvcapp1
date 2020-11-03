@@ -6,12 +6,15 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Shared;
+using WebApi1.Contracts.Dto;
 
-namespace WebApi1.Controllers
+namespace WebApi1.Web.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    [Authorize(AuthenticationSchemes = "Bearer,Test")]
+    //[Authorize(AuthenticationSchemes = "Bearer,Test")]
+    [Authorize(Policy = "DefaultPolicy")]
+
     public class WeatherForecastController : ControllerBase
     {
         private static readonly string[] Summaries = new[]

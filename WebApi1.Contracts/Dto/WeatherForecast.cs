@@ -1,6 +1,6 @@
 using System;
 
-namespace Shared
+namespace WebApi1.Contracts.Dto
 {
     public class WeatherForecast
     {

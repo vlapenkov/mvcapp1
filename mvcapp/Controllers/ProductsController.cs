@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Shared;
-using Shared.Interfaces;
+using WebApi1.Contracts.Interfaces;
 
 namespace mvcapp.Controllers
 {

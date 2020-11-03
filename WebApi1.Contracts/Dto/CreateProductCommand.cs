@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Shared.Dto
+namespace WebApi1.Contracts.Dto
 {
     public class CreateProductCommand : IRequest<int>
     {

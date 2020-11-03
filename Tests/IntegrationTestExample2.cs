@@ -15,6 +15,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using WebApi1;
+using WebApi1.Contracts.Dto;
 using Xunit;
 
 namespace Tests
@@ -57,7 +58,7 @@ namespace Tests
 
             //// Deserialize and examine results.
             var data = await httpResponse.Content.ReadAsStringAsync();
-           var weatherForecasts = JsonConvert.DeserializeObject<IEnumerable<WeatherForecast>>(data);
+           var weatherForecasts = JsonConvert.DeserializeObject<IEnumerable<WebApi1.Contracts.Dto.WeatherForecast>>(data);
                        
 
             Assert.Equal(HttpStatusCode.OK, httpResponse.StatusCode);            

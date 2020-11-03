@@ -10,7 +10,9 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using WebApi1;
+using WebApi1.Contracts.Dto;
 using Xunit;
+
 
 namespace Tests
 {
