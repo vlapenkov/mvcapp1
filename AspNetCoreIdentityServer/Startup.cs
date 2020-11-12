@@ -62,7 +62,6 @@ namespace AspNetCoreIdentityServer
 
             // нужно для нормальной работы OpenIdCоnnect в Chrome и других браузерах без http
 
-
             //services.ConfigureExternalCookie(options =>
             //{
             //    options.Cookie.IsEssential = true;
