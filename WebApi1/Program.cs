@@ -31,7 +31,6 @@ namespace WebApi1
         static void DoMigrate(IHost webHost)
         {
             
-
                 using (var serviceScope = webHost.Services.GetRequiredService<IServiceScopeFactory>().CreateScope())
                 {
                     Console.WriteLine("Applying Entity Framework migrations");

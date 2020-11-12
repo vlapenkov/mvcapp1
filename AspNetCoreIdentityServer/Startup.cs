@@ -32,6 +32,9 @@ namespace AspNetCoreIdentityServer
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
+            //   services.AddDbContext<ApplicationDbContext>(options =>
+            //options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
+
             services.AddIdentity<ApplicationUser, IdentityRole>(option =>
             {
                 option.Password.RequireDigit = false;
