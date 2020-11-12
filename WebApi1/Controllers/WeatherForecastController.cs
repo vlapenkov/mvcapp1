@@ -13,7 +13,8 @@ namespace WebApi1.Web.Controllers
     [ApiController]
     [Route("[controller]")]
     //[Authorize(AuthenticationSchemes = "Bearer,Test")]
-    [Authorize(Policy = "DefaultPolicy")]
+    //[Authorize(Policy = "DefaultPolicy")]
+    [AllowAnonymous]
 
     public class WeatherForecastController : ControllerBase
     {
