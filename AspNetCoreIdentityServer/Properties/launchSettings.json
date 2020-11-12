@@ -11,7 +11,7 @@
 
     "AspNetCoreIdentityServer.Development": {
       "commandName": "Project",
-      "commandLineArgs": "--ef-migrate",
+      "commandLineArgs": "no--ef-migrate",
       "launchBrowser": true,
       "applicationUrl": "http://localhost:5500",
       "environmentVariables": {

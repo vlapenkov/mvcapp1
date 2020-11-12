@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
-namespace WebApi1.Migrations
+namespace WebApi1.Web.Migrations
 {
-    public partial class init : Migration
+    public partial class Init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -26,7 +26,9 @@ namespace WebApi1.Migrations
                 values: new object[,]
                 {
                     { 1, "First product" },
-                    { 2, "Second product" }
+                    { 2, "Second product" },
+                    { 3, "Third product" },
+                    { 4, "Forth product" }
                 });
         }
 

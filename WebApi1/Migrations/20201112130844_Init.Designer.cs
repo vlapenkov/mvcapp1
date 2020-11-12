@@ -6,11 +6,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using WebApi1;
 
-namespace WebApi1.Migrations
+namespace WebApi1.Web.Migrations
 {
     [DbContext(typeof(ProductsDbContext))]
-    [Migration("20200707093004_init")]
-    partial class init
+    [Migration("20201112130844_Init")]
+    partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -45,6 +45,16 @@ namespace WebApi1.Migrations
                         {
                             Id = 2,
                             Name = "Second product"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Third product"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Name = "Forth product"
                         });
                 });
 #pragma warning restore 612, 618

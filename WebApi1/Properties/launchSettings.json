@@ -3,7 +3,7 @@
   "profiles": {
     "WebApi1.Development": {
       "commandName": "Project",
-      "commandLineArgs": "--ef-migrate",
+      "commandLineArgs": "no--ef-migrate",
       "launchUrl": "weatherforecast",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
