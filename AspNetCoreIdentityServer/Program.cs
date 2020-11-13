@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using AspNetCoreIdentityServer.Data;
 using Microsoft.AspNetCore.Hosting;
@@ -55,7 +56,8 @@ namespace AspNetCoreIdentityServer
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    webBuilder.UseStartup<Startup>();
+                    webBuilder.UseStartup<Startup>()
+                      .UseKestrel(options => options.Listen(IPAddress.Loopback, 5500));
                 });
     }
 }
