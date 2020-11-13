@@ -8,5 +8,6 @@ namespace AspNetCoreIdentityServer.Models
 {
     public class ApplicationUser :IdentityUser
     {
+        public int Age { get; set; }
     }
 }
