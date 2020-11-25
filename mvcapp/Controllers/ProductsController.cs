@@ -5,8 +5,11 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Shared;
+using WebApi1.Contracts.Dto;
 using WebApi1.Contracts.Interfaces;
 
 namespace mvcapp.Controllers
@@ -28,6 +31,10 @@ namespace mvcapp.Controllers
             //client.SetBearerToken(accessToken);
             //var response = await client.GetStringAsync("http://localhost:5100/api/Products/GetProducts");
             //return Ok(response);
+
+
+            
+            
             var (products, error) = await _productService.GetProducts().TryCatch();
             if (error != null)
                 return Ok(error);

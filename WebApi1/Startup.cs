@@ -36,7 +36,9 @@ namespace WebApi1
           
             services.AddDbContext<ProductsDbContext>(options =>
             options.UseNpgsql(Configuration.GetConnectionString("ProductsDatabase")));
-            
+
+            Console.WriteLine(Configuration.GetConnectionString("ProductsDatabase"));
+
             services.AddTransient<ExampleJob>();
             //  services.AddSingleton<ITypeLoadHelper, SimpleTypeLoadHelper>();
 

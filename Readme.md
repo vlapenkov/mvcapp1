@@ -8,3 +8,5 @@
 2. Для IntegrationTestExample2 mock dbContext и создания токена в схеме Test
 
 Ваня предлагает получать токен с Production среды и тестировать ее
+
+База Products и IS4 переведены на Postgres
