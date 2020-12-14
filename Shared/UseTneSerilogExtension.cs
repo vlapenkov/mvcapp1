@@ -8,6 +8,7 @@ namespace TNE.Common.Logger
 {
     public static partial class SerilogExtensions
     {
+
         /// <summary>
         /// Подключение Serilog с преднастроенными параметрами для логирвания.
         /// В качестве URL сервиса ElasticSearch - используется параметр 'Services:Elasticsearch:BaseUri' из appsettings.json

@@ -7,13 +7,9 @@ using System.Text;
 namespace Shared
 {
     public class RefitExceptionHandler : IExceptionHandler
-
     {
-
         public ProblemDetailsEx Handle(Exception ex)
-
         {
-
             ProblemDetailsEx problemDetails = null;
 
            

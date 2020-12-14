@@ -16,7 +16,6 @@ namespace Shared
         private readonly ILogger _logger;
 
 
-
         public DefaultExceptionHandler(ILogger<DefaultExceptionHandler> logger)
         {
             _logger = logger;

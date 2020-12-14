@@ -45,7 +45,7 @@ namespace WebApi1.Web.Controllers
             return result;
         }
 
-
+        [AllowAnonymous]
         [HttpPost]
         public async Task<int> Create(CreateProductCommand command)
         {

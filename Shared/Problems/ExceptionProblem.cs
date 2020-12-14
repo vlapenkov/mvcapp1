@@ -7,24 +7,18 @@ using System.Text;
 namespace Shared.Problems
 {
     public class ExceptionProblem : ProblemDetailsEx
-
     {
 
         [JsonConstructor]
 
         private ExceptionProblem()
-
         {
 
         }
 
 
-
         public ExceptionProblem(Exception ex)
-
         {
-
-
 
             this.Title = "System Error";
 

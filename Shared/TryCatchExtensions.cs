@@ -8,7 +8,6 @@ namespace Shared
 {
    public static class TryCatchExtensions
     {
-
         public static IExceptionHandler Handler { get; set; } = null;
 
         public static async Task<(T data, ProblemDetailsEx error)> TryCatch<T>(this Task<T> task)

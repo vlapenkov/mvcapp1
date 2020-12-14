@@ -18,7 +18,7 @@ namespace WebApi1.Services
 
         public async Task<int> Handle(CreateProductCommand command, CancellationToken cancellationToken)
         {
-            var product = new Product {Id= command.Id, Name= command.Name };
+            var product = new Product { Name= command.Name };
             
             _context.Products.Add(product);
             try

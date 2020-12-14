@@ -8,12 +8,9 @@ namespace Shared.Problems
     public class AuthorizationProblem : ProblemDetailsEx
 
     {
-
         public AuthorizationProblem(string detail)
 
         {
-
-
 
             this.Title = "Permission Error";
 
