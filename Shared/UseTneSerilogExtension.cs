@@ -18,7 +18,7 @@ namespace TNE.Common.Logger
         /// <returns>IWebHostBuilder</returns>
         public static IWebHostBuilder UseTneSerilog(this IWebHostBuilder hostBuilder)
         {
-           
+
 
             string uriPath = "Services:Elasticsearch:BaseUri";
             string[] arrAppName = Assembly.GetEntryAssembly().GetName().Name.Split('.');
@@ -45,21 +45,21 @@ namespace TNE.Common.Logger
                 .ReadFrom.Configuration(hostingContext.Configuration) // на 10.01.2020 берем только MinimumLevel, остальное определяем в коде. 
                 .Enrich.FromLogContext()
                 .Enrich.WithMachineName() //todo: sntr: на никсах почемуто имя компа не записывается в лог. надо разбираться.
-                
+                                          //  .Enrich.WithCorrelationId()
                 .Enrich.WithProperty("ServiceName", applicationName)
-             //   .Enrich.WithProperty("UserName", "Anonymous")
-             //   .Enrich.WithProperty("EventLevel", "Application")
-             //   .Enrich.WithProperty("EventOperation", "")
+                //   .Enrich.WithProperty("UserName", "Anonymous")
+                //   .Enrich.WithProperty("EventLevel", "Application")
+                //   .Enrich.WithProperty("EventOperation", "")
                 .WriteTo.Console()
                 .WriteTo.File($"Logs/{applicationName}-{date}.txt",
                 Serilog.Events.LogEventLevel.Verbose,
                 "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{ServiceName}] [{Level}] {Message} {UserName} {ActionName} {TestUser}  {NewLine} {Exception}")
-                //.WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri(hostingContext.Configuration[uriPath]))
-                //{
-                //    AutoRegisterTemplate = true,
-                //    AutoRegisterTemplateVersion = AutoRegisterTemplateVersion.ESv6,
-                //    IndexDecider = SerilogExtensions.GetElasticsearchIndexName
-                //})
+            //.WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri(hostingContext.Configuration[uriPath]))
+            //{
+            //    AutoRegisterTemplate = true,
+            //    AutoRegisterTemplateVersion = AutoRegisterTemplateVersion.ESv6,
+            //    IndexDecider = SerilogExtensions.GetElasticsearchIndexName
+            //})
             );
 
             return hostBuilder;

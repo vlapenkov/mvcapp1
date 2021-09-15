@@ -17,6 +17,7 @@ using Quartz;
 using Quartz.Impl;
 using Quartz.Simpl;
 using Quartz.Spi;
+using Shared;
 using WebApi1.Quartz;
 
 namespace WebApi1
@@ -33,14 +34,15 @@ namespace WebApi1
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-          
+            services.AddSingleton<IProblemDetailsLogger, ProblemDetailsLogger>();
+            services.AddTransient<IExceptionHandler, DefaultExceptionHandler>();
             services.AddDbContext<ProductsDbContext>(options =>
             options.UseNpgsql(Configuration.GetConnectionString("ProductsDatabase")));
 
-            Console.WriteLine(Configuration.GetConnectionString("ProductsDatabase"));
 
+            services.AddHttpContextAccessor();
             services.AddTransient<ExampleJob>();
-            //  services.AddSingleton<ITypeLoadHelper, SimpleTypeLoadHelper>();
+
 
             services.ConfigureQuartz();
             services.AddMediatR(Assembly.GetExecutingAssembly());
@@ -61,7 +63,7 @@ namespace WebApi1
                     {
                         policy.AuthenticationSchemes.Add("Bearer");
                         policy.RequireAuthenticatedUser();
-                      // policy.Requirements.Add(new MinimumAgeRequirement());
+                        // policy.Requirements.Add(new MinimumAgeRequirement());
                     });
                 }
                 );
@@ -73,11 +75,11 @@ namespace WebApi1
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, 
-            IWebHostEnvironment env, 
+        public void Configure(IApplicationBuilder app,
+            IWebHostEnvironment env,
             IHostApplicationLifetime applicationLifetime)
         {
-           
+
             app.UseMiddleware(typeof(ErrorHandlingMiddleware));
 
             // Enable middleware to serve generated Swagger as a JSON endpoint.
@@ -117,6 +119,6 @@ namespace WebApi1
             //}
         }
 
-       
+
     }
 }

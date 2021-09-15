@@ -1,112 +1,89 @@
 ﻿using Newtonsoft.Json;
-using Refit;
+using Shared;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace Shared
+public class RefitExceptionHandler : IExceptionHandler
+
 {
-    public class RefitExceptionHandler : IExceptionHandler
+
+    public ProblemDetailsEx Handle(Exception ex)
+
     {
-        public ProblemDetailsEx Handle(Exception ex)
+
+        ProblemDetailsEx problemDetails = null;
+
+        dynamic refitApiException = ex;
+
+
+        if (ex.GetType().FullName == "Refit.ApiException")
         {
-            ProblemDetailsEx problemDetails = null;
-
-           
-
-            if (ex.GetType().FullName == "Refit.ApiException")
-
-            { 
-
-                if (!string.IsNullOrWhiteSpace(( ex as ApiException).Content))
-
-                {
-
-                    problemDetails = DeserializeContent<ProblemDetailsEx>((ex as ApiException).Content);
-
-
-
-                    if (problemDetails == null)
-
-                    {
-
-                        //todo: значит не ProblemDetailsEx
-
-                    }
-
-
-
-                }
-
-
-
-            }
-
-
-
-            if (ex.GetType().FullName == "Refit.ValidationApiException") //  если ContentType == Application/Problem* то refit возвращает ValidationApiException, и Contnet is Refit.Problemdetail
-
+            if (!string.IsNullOrWhiteSpace(refitApiException.Content ?? ""))
             {
-                Refit.ProblemDetails problemDet = (ex as ValidationApiException).Content;
+                problemDetails = DeserializeContent<ProblemDetailsEx>(refitApiException.Content);
 
-                problemDetails = new ProblemDetailsEx
+                if (problemDetails == null)
+
                 {
-                    Title = problemDet.Title,
-                    ErrorLevel = ErrorLevel.Error,
-                    Status = problemDet.Status,
-                    Type = problemDet.Type,
-                    Detail = problemDet.Detail,
-                    Instance = problemDet.Instance
-
-                };
-                //todo:  по хоруошему вообще отключить Refit.Problemdetail - они нам только мешают.
-
-                
+                }
             }
+        }
 
-            return problemDetails;
+
+
+
+
+        if (ex.GetType().FullName == "Refit.ValidationApiException") //  если ContentType == Application/Problem* то refit возвращает ValidationApiException, и Contnet is Refit.Problemdetail
+
+        {
+
+            //todo:  по хоруошему вообще отключить Refit.Problemdetail - они нам только мешают.
+
+            problemDetails = DeserializeContent<ProblemDetailsEx>(refitApiException.Content);// TneProblemDetails.ConvertTo<ProblemDetailsEx>(refitApiException.Content);
+
+            problemDetails.ErrorLevel = ErrorLevel.Error;
 
         }
 
 
 
-       
+        return problemDetails;
+
+    }
 
 
 
-        private static T DeserializeContent<T>(string content)
+
+
+    private static T DeserializeContent<T>(string content)
+
+    {
+
+        if (typeof(T) == typeof(string))
 
         {
 
-            if (typeof(T) == typeof(string))
+            return (T)(object)content;
 
-            {
-
-                return (T)(object)content;
-
-            }
+        }
 
 
 
-            try
+        try
 
-            {
+        {
 
-                return JsonConvert.DeserializeObject<T>(content);
+            return JsonConvert.DeserializeObject<T>(content);
 
-            }
+        }
 
-            catch (Exception)
+        catch (Exception)
 
-            {
+        {
 
-                return default(T);
-
-            }
+            return default(T);
 
         }
 
     }
 
 }
-

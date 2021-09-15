@@ -25,7 +25,7 @@ namespace WebApi1.Services
                     Id=product.Id,
                     Name=product.Name 
                 })
-                .ToListAsync();
+                .ToListAsync(cancellationToken);
             if (productList == null)
             {
                 return null;

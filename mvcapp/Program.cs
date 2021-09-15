@@ -26,8 +26,8 @@ namespace mvcapp
                 {
                     webBuilder
                     .UseStartup<Startup>()
+                    .UseKestrel(options => options.Listen(IPAddress.Any, 5000))
                     .UseTneSerilog();
-                   // .UseKestrel(options => options.Listen(IPAddress.Loopback, 5000));                   
 
                 });               
 

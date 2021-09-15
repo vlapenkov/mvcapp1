@@ -26,7 +26,7 @@ namespace Shared.Problems
 
             this.ErrorLevel = ErrorLevel.Error;
 
-           
+
             this.Status = GetStatusCodeFromException(ex);
 
             this.Detail = ex.Message;

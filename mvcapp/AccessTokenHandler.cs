@@ -9,11 +9,11 @@ using System.Threading.Tasks;
 
 namespace mvc.services
 {
-   public class MyAccessTokenHandler :DelegatingHandler
+    public class AccessTokenHandler : DelegatingHandler
     {
         IHttpContextAccessor _contextAccessor;
 
-        public MyAccessTokenHandler(IHttpContextAccessor contextAccessor)
+        public AccessTokenHandler(IHttpContextAccessor contextAccessor)
         {
             _contextAccessor = contextAccessor;
         }
@@ -22,9 +22,9 @@ namespace mvc.services
         {
             // берем access_token из контекста
             var accessToken = await _contextAccessor.HttpContext.GetTokenAsync("access_token");
-          
+
             request.SetBearerToken(accessToken);
-           return await base.SendAsync(request, cancellationToken);
+            return await base.SendAsync(request, cancellationToken);
         }
     }
 }

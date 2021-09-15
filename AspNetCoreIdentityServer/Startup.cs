@@ -62,11 +62,11 @@ namespace AspNetCoreIdentityServer
 
             // нужно для нормальной работы OpenIdCоnnect в Chrome и других браузерах без http
 
-            //services.ConfigureExternalCookie(options =>
-            //{
-            //    options.Cookie.IsEssential = true;
-            //    options.Cookie.SameSite = SameSiteMode.Unspecified; //SameSiteMode.Unspecified in .NET Core 3.1
-            //    });
+            services.ConfigureExternalCookie(options =>
+            {
+                options.Cookie.IsEssential = true;
+                options.Cookie.SameSite = SameSiteMode.Unspecified; //SameSiteMode.Unspecified in .NET Core 3.1
+            });
 
             services.ConfigureApplicationCookie(options =>
             {

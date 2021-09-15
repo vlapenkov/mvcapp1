@@ -7,16 +7,17 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Shared;
 using WebApi1.Contracts.Dto;
+using WebApi1.Contracts.Interfaces;
 
 namespace WebApi1.Web.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     //[Authorize(AuthenticationSchemes = "Bearer,Test")]
     //[Authorize(Policy = "DefaultPolicy")]
     [AllowAnonymous]
 
-    public class WeatherForecastController : ControllerBase
+    public class WeatherForecastController : ControllerBase, IWeatherService
     {
         private static readonly string[] Summaries = new[]
         {
@@ -31,8 +32,9 @@ namespace WebApi1.Web.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<WeatherForecast> Get()
+        public async Task< IEnumerable<WeatherForecast>> Get()
         {
+            throw new NotImplementedException("не реалтзовано");
             _logger.LogInformation("Info from logger");
             _logger.LogWarning("Warning from logger");
             _logger.LogError("Error from logger");

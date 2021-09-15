@@ -1,20 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace Shared
 {
 
-    public enum ErrorLevel { 
-    Unknown=0,
-    Warning,
-    Error
+    public enum ErrorLevel
+    {
+        Unknown = 0,
+        Warning,
+        Error
     }
 
 
-    public class ProblemDetailsEx 
+    public class ProblemDetailsEx
     {
+
+
         public string Type { get; set; }
         public ErrorLevel ErrorLevel { get; set; }
 
@@ -22,5 +26,8 @@ namespace Shared
         public string Title { get; set; }
         public string Detail { get; set; }
         public string Instance { get; set; }
+
+        [JsonExtensionData]
+        public IDictionary<string, object> Extensions { get; } = new Dictionary<string, object>(StringComparer.Ordinal);
     }
 }

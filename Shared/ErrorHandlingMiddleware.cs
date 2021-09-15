@@ -1,9 +1,15 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Abstractions;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Shared;
+using Shared.Exceptions;
+using Shared.Problems;
 using System;
 using System.Net;
+using System.Security.Authentication;
 using System.Threading.Tasks;
 
 namespace mvcapp
@@ -12,8 +18,10 @@ namespace mvcapp
     {
         private readonly ILogger _logger;
         private readonly RequestDelegate next;
-        public ErrorHandlingMiddleware(RequestDelegate next, ILoggerFactory loggerFactory)
+        private readonly IExceptionHandler _defaultHandler;
+        public ErrorHandlingMiddleware(RequestDelegate next, ILoggerFactory loggerFactory, IExceptionHandler defaultHandler)
         {
+            _defaultHandler = defaultHandler;
             _logger = loggerFactory.CreateLogger<ErrorHandlingMiddleware>();
             this.next = next;
         }
@@ -30,39 +38,38 @@ namespace mvcapp
             }
         }
 
-        private Task HandleExceptionAsync(HttpContext context, Exception ex)
+        private async Task HandleExceptionAsync(HttpContext context, Exception ex)
         {
+            if (context.Response.HasStarted) return;
 
+            var problemDetails = _defaultHandler.Handle(ex);
 
-            //if (ex is MyNotFoundException) code = HttpStatusCode.NotFound;
-            //else if (ex is MyUnauthorizedException) code = HttpStatusCode.Unauthorized;
-            //else if (ex is MyException) code = HttpStatusCode.BadRequest;
-            var code = HttpStatusCode.InternalServerError; // 500 if unexpected
+            // var result = JsonConvert.SerializeObject(problemDetails);
 
-            if (!context.Response.HasStarted)
+            if (problemDetails == null) return;
+            //problemDetails.Extensions = null;
+            var result = new ObjectResult(problemDetails)
             {
-                _logger.LogError(ex.Message +
-               ex.StackTrace);
+                StatusCode = problemDetails.Status, //?? context.Response.StatusCode,
+                DeclaredType = problemDetails.GetType()
 
-            }
-            var result = JsonConvert.SerializeObject(new
-                ProblemDetailsEx
-            {
-                Type ="https://developer.mozilla.org/ru/docs/web/HTTP/Status",
-                ErrorLevel = ErrorLevel.Error,
-                Status = (int)code,
-                Title = "Http error",
-                Detail = ex.Message,
-                Instance = context.Request.Path
+            };
 
-            }
-
-                );
-           
+            // var resAsString = JsonConvert.SerializeObject(result);
+            // context.Items["Error"] = result;
             context.Response.ContentType = "application/problem+json";
-            
-            context.Response.StatusCode = (int)code;
-            return context.Response.WriteAsync(result);
+            // context.Response.ContentType = "application/json";
+
+            //  context.Response.StatusCode = (int)problemDetails.Status;
+            // context.Response.WriteAsync(resAsString);
+
+            var routeData = context.GetRouteData() ?? new RouteData();
+            var emptyActionDescriptor = new ActionDescriptor();
+            var actionContext = new ActionContext(context, routeData, emptyActionDescriptor);
+
+            await result.ExecuteResultAsync(actionContext);
         }
+
+
     }
 }

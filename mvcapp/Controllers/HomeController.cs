@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -39,8 +40,10 @@ namespace mvcapp.Controllers
 
         public IActionResult Privacy()
         {
-            throw new NullReferenceException("some exception message");
-            return View();
+              HttpContext.Response.Cookies.Append("name", "Tom3", new CookieOptions {Domain="first.local_host", SameSite=SameSiteMode.None });
+            HttpContext.Response.Cookies.Append("name", "Tom3", new CookieOptions { Domain = "local_host", SameSite = SameSiteMode.None });
+            //throw new NullReferenceException("some exception message");
+            return Ok();
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

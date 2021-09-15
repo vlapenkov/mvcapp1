@@ -1,22 +1,23 @@
 ﻿using Microsoft.Extensions.Logging;
 using mvcapp;
+using Shared.Exceptions;
 using Shared.Problems;
 using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
+using System.Security.Authentication;
 using System.Text;
 
 namespace Shared
 {
-   public class DefaultExceptionHandler :IExceptionHandler
+    public class DefaultExceptionHandler : IExceptionHandler
     {
-        private Exception _exception;
 
-        private readonly ILogger _logger;
+        private readonly IProblemDetailsLogger _logger;
 
 
-        public DefaultExceptionHandler(ILogger<DefaultExceptionHandler> logger)
+        public DefaultExceptionHandler(IProblemDetailsLogger logger)
         {
             _logger = logger;
         }
@@ -25,261 +26,120 @@ namespace Shared
 
         public virtual ProblemDetailsEx Handle(Exception ex)
         {
-            _exception = ex;
-
-            ProblemDetailsEx problemDetails;
+            ProblemDetailsEx problemDetails = null;
 
             try
-
             {
-
-
-
                 switch (ex)
-
                 {
-
-                    //case ProblemDetailsException pEx:
-
-                    //    problemDetails = (ProblemDetailsEx)pEx.ProblemDetails;
-
-                    //    break;
-
-                    //case TneException tnepEx:
-
-                    //    problemDetails = HandleTneException(tnepEx);
-
-                    //    break;
-
-                    case HttpRequestException httpEx:
-
-                        problemDetails = HandleHttpRequestException(httpEx);
-
-                        break;
+                    case ProblemDetailsException prEx:
+                        {
+                            problemDetails = prEx.ProblemDetails;
+                            break;
+                        }
+                    case TneException theEx:
+                        {
+                            problemDetails = HandleTneException(theEx);
+                            break;
+                        }
 
                     default:
-
                         problemDetails = HandleSystemException(ex);
-
                         break;
-
                 }
-
             }
-
-            catch (Exception innerEx)
-
-                {
-
-                // todo: sntr: как бы желательно сохранить и обрабатываемый Exception и этот и все залогировать. т.е. нужен свой спец. класс exception.
-
-                _exception = ex;
-
-
-
-                //todo: вынести в DeveloperProblem
-
-                problemDetails = new ProblemDetailsEx
-
-                {
-
-                    Type = "about:blank",
-
-                    Detail = "Exception in ExceptionHandler: " + _exception.Message,
-
-                    ErrorLevel = ErrorLevel.Error,
-
-                    Status = 500,
-
-                    Title = "ExceptionHandler Error"
-
-                };
-
-            }
-
-
-
-
-
-            problemDetails.Instance = GetExceptionTargetSite(_exception);
-
-           
-
-
-
-            // todo: добавить логирование
-
-            if (problemDetails != null)
-
+            catch (Exception innerEx) // если что-то случится в этом блоке
             {
 
-                var logLevel = problemDetails.ErrorLevel == ErrorLevel.Warning ? LogLevel.Warning : LogLevel.Error;
-                _logger.Log(logLevel, _exception, "@problemDetails", problemDetails);
+            }
 
+
+
+            if (problemDetails != null)
+            {
+                problemDetails.Instance = GetExceptionTargetSite(ex);
+                _logger.Log(problemDetails, ex);
             }
 
 
 
             return problemDetails;
-
-
-
         }
-
-
 
         private string GetExceptionTargetSite(Exception ex)
-
         {
-
-            string targetSite = ex?.TargetSite?.DeclaringType?.DeclaringType?.FullName
-
-               ?? ex?.TargetSite?.DeclaringType?.FullName;
-
-
-
+            string targetSite = ex.TargetSite?.DeclaringType?.DeclaringType?.FullName ?? ex.TargetSite?.DeclaringType?.FullName;
             return targetSite;
-
         }
 
-
-
-        //todo: надо реализовать некий мапинг.
-
         private ProblemDetailsEx HandleSystemException(Exception ex)
-
         {
-
-
-
             ProblemDetailsEx problemDetail;
+            // Обработка для refit   
 
+            // Далее switch case  в зависимости от  типа исключений
+            // здесь загрушка
 
-
-       // todo: нужен какой то универсальный подход для обработки подобных случаев.
-
-       IExceptionHandler h = new RefitExceptionHandler(); // todo: sntr: как бы надо брать из DI.
-
-            problemDetail = h.Handle(ex);
-
-
-
-            if (problemDetail != null)
-
+            switch (ex)
             {
+                case AuthenticationException e1:
+                case UnauthorizedAccessException e2:
+                    {
+                        problemDetail = new AuthorizationProblem(ex.Message);
+                        break;
+                    }
+                //case DbUpdateExcetion e3:
+                //    {
+                //        problemDetail = new ExceptionProblem(ex.InnerException ?? ex);
+                //        break;
+                //    }
+                default:
+                    {
+                        var code = HttpStatusCode.InternalServerError; // 500 if unexpected
+                        problemDetail = new ProblemDetailsEx
+                        {
+                            Type = "https://developer.mozilla.org/ru/docs/web/HTTP/Status",
+                            ErrorLevel = ErrorLevel.Error,
+                            Status = (int)code,
+                            Title = "Http error",
+                            Detail = ex.Message
 
-                return problemDetail;
+                        };
 
+                    }
+                    break;
             }
 
 
+            return problemDetail;
+
+
+
+
+
+        }
+
+        private ProblemDetailsEx HandleTneException(TneException ex)
+        {
 
             switch (ex)
 
             {
-
-                //  case AuthenticationException e1:
-
-                case UnauthorizedAccessException e2:
-
-                    problemDetail = new AuthorizationProblem(ex.Message);
-
-                    break;
-
-                //case ArgumentException e:
-
-                //case NotImplementedException e2:
-
-                //    problemDetail = new ApplicationProblem(ex.Message);
-
-                //    break;
-
+                case TneValidationException tve:
+                    {
+                        return new ValidationsProblem(tve.Data);
+                        break;
+                    }
+                case TneErrorException tve:
+                    {
+                        return new ExceptionProblem(tve);
+                        break;
+                    }
                 default:
-
-                    problemDetail = new ExceptionProblem(ex);
-
+                    return new ExceptionProblem(ex);
                     break;
-
             }
-
-
-
-
-
-              return problemDetail;
-
-            }
-
-
-
-
-
-            #region TneExсeptions
-
-
-
-            //private ProblemDetailsEx HandleTneException(TneException ex)
-
-            //{
-
-            //    ProblemDetailsEx problemDetails;
-
-            //    switch (ex)
-
-            //    {
-
-            //        case TneNotFoundException tneEx:
-
-            //            problemDetails = new NotFoundProblem(tneEx.Message); //HandleTneNotFoundException(tneEx);
-
-            //            break;
-
-            //        case TneWarningException tneEx:
-
-            //            problemDetails = new WarningProblem(tneEx.Message);
-
-            //            break;
-
-            //        case TneErrorException tneEx:
-
-            //            problemDetails = new ErrorProblem(tneEx.Message);
-
-            //            break;
-
-            //        default:
-
-            //            problemDetails = new ErrorProblem(ex.Message);
-
-            //            break;
-
-            //    }
-
-
-
-            //    return problemDetails;
-
-            //}
-
-
-
-
-
-            #endregion // end TneExсeptions
-
-
-
-
-
-            private static ProblemDetailsEx HandleHttpRequestException(HttpRequestException ex)
-
-            {
-
-                //todo: sntr: надо как то получить Url чего вызывали.
-
-                return new HttpProblem(ex.Message, HttpStatusCode.BadGateway, ex.Source);
-
-            }
-
         }
+    }
 }
 

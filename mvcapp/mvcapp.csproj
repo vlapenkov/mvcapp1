@@ -4,7 +4,7 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 <ItemGroup>
-  <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.3" />
+  <!--<PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.4" />-->
   <PackageReference Include="refit" Version="5.1.67" />
   <PackageReference Include="Refit.HttpClientFactory" Version="5.1.67" />  
 </ItemGroup>
@@ -14,6 +14,10 @@
     <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="3.1.5" />
     <PackageReference Include="IdentityModel" Version="3.8.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.5" />
+  <!--  <PackageReference Include="Stimulsoft.Reports.Web.NetCore" Version="2020.5.2" />
+    <PackageReference Include="Stimulsoft.Dashboards.Web.NetCore" Version="2020.5.2" /> -->
+    <PackageReference Include="Stimulsoft.Reports.Web.NetCore" Version="2021.1.1" />
+    <PackageReference Include="Stimulsoft.Dashboards.Web.NetCore" Version="2021.1.1" /> 
   </ItemGroup>
   
   <ItemGroup>
