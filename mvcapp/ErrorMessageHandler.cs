@@ -49,7 +49,7 @@ namespace mvc.services
                             }
 
                     }
-                else
+                else // если Access Denied
                     problem = new HttpProblem(response.ReasonPhrase, response.StatusCode, response.RequestMessage?.RequestUri?.AbsoluteUri);
                 throw new ProblemDetailsException(problem);
             }
