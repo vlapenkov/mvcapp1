@@ -130,6 +130,7 @@ namespace mvcapp
             app.UseMiddleware(typeof(ErrorHandlingMiddleware));
 
             app.UseMiddleware<CorrelationIdMiddleware>();
+            app.UseMiddleware<CorrelationIdEnrichLogMiddleware>();
             //  app.UseCorrelationId(); // adds the correlation ID middleware
 
             app.UseStaticFiles();

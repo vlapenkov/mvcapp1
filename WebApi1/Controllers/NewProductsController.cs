@@ -24,10 +24,14 @@ namespace WebApi1.Web.Controllers
         private ILogger _logger;
         private IHttpContextAccessor _contextAccessor;
 
-        public NewProductsController(IMediator mediator, IHttpContextAccessor contextAccessor)
+        public NewProductsController(
+            IMediator mediator,
+            IHttpContextAccessor contextAccessor,
+            ILogger<NewProductsController> logger)
         {
             _mediator = mediator;
             _contextAccessor = contextAccessor;
+            _logger = logger;
         }
 
 
@@ -38,7 +42,7 @@ namespace WebApi1.Web.Controllers
         //[Authorize]
         public async Task<IEnumerable<ProductDto>> GetProducts()
         {
-            // _logger.Log(_contextAccessor.HttpContext.TraceIdentifier)
+            _logger.LogWarning("log from webapi {d}", DateTime.Now);
             // throw new TneErrorException("exception message");
             //throw new TneValidationException("exception message", "fio");
             var result = await _mediator.Send(new GetAllProductsQuery());

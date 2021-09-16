@@ -45,7 +45,7 @@ namespace shared
 
             if (!context.Items.ContainsKey(_options.Header))
                 context.Items.Add(_options.Header, corId);
-            _logger.LogWarning("Correlation id is: " + corId);
+            //  _logger.LogWarning("Correlation id is: " + corId);
 
             if (_options.IncludeInResponse)
             {

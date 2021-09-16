@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Serilog;
 using Serilog.Sinks.Elasticsearch;
+using Shared;
 using System;
 using System.Reflection;
 
@@ -47,13 +48,14 @@ namespace TNE.Common.Logger
                 .Enrich.WithMachineName() //todo: sntr: на никсах почемуто имя компа не записывается в лог. надо разбираться.
                                           //  .Enrich.WithCorrelationId()
                 .Enrich.WithProperty("ServiceName", applicationName)
-                //   .Enrich.WithProperty("UserName", "Anonymous")
+                .Enrich.WithProperty("UserName", "Anonymous")
+
                 //   .Enrich.WithProperty("EventLevel", "Application")
                 //   .Enrich.WithProperty("EventOperation", "")
                 .WriteTo.Console()
                 .WriteTo.File($"Logs/{applicationName}-{date}.txt",
                 Serilog.Events.LogEventLevel.Verbose,
-                "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{ServiceName}] [{Level}] {Message} {UserName} {ActionName} {TestUser}  {NewLine} {Exception}")
+                "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{ServiceName}] [{Level}] {Message} {UserName} {CorrelationId} {ActionName} {TestUser}  {NewLine} {Exception}")
             //.WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri(hostingContext.Configuration[uriPath]))
             //{
             //    AutoRegisterTemplate = true,

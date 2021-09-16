@@ -92,7 +92,9 @@ namespace WebApi1
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
             });
+
             app.UseMiddleware<CorrelationIdMiddleware>();
+            app.UseMiddleware<CorrelationIdEnrichLogMiddleware>();
 
             //if (env.IsDevelopment())
             //{
