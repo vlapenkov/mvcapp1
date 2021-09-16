@@ -34,12 +34,12 @@ namespace WebApi1.Web.Controllers
 
 
         [HttpGet]
-        // [AllowAnonymous]
-        [Authorize]
+        [AllowAnonymous]
+        //[Authorize]
         public async Task<IEnumerable<ProductDto>> GetProducts()
         {
             // _logger.Log(_contextAccessor.HttpContext.TraceIdentifier)
-            throw new TneErrorException("exception message");
+            // throw new TneErrorException("exception message");
             //throw new TneValidationException("exception message", "fio");
             var result = await _mediator.Send(new GetAllProductsQuery());
 

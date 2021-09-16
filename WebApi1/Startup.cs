@@ -17,6 +17,7 @@ using Quartz;
 using Quartz.Impl;
 using Quartz.Simpl;
 using Quartz.Spi;
+using shared;
 using Shared;
 using WebApi1.Quartz;
 
@@ -91,7 +92,7 @@ namespace WebApi1
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
             });
-
+            app.UseMiddleware<CorrelationIdMiddleware>();
 
             //if (env.IsDevelopment())
             //{

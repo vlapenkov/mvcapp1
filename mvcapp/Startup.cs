@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using mvc.services;
 using Refit;
+using shared;
 using Shared;
 using System;
 using WebApi1.Contracts.Interfaces;
@@ -50,12 +51,16 @@ namespace mvcapp
 
             //});
 
+            // Example of adding default correlation ID (using the GUID generator) services
+            // As shown here, options can be configured via the configure delegate overload
 
             services.AddHttpContextAccessor();
             services.AddSingleton<IProblemDetailsLogger, ProblemDetailsLogger>();
             services.AddTransient<IExceptionHandler, DefaultExceptionHandler>();
             services.AddTransient<mvc.services.AccessTokenHandler>();
             services.AddTransient<ErrorMessageHandler>();
+            services.AddTransient<CorrelationIdHandler>();
+            // services.AddDefaultCorrelationId();
 
 
             #region identity
@@ -102,6 +107,9 @@ namespace mvcapp
             var baseAddress = new Uri(Configuration["Services:WebApi1"]);
             services.AddRefitClient<IProductService>().ConfigureHttpClient(c => c.BaseAddress = baseAddress)
                 .AddHttpMessageHandler<mvc.services.AccessTokenHandler>()
+                .AddHttpMessageHandler<mvcapp.CorrelationIdHandler>()
+                // .AddCorrelationIdForwarding()
+                //          .AddHttpMessageHandler<NoOpDelegatingHandler>()
                 .AddHttpMessageHandler<ErrorMessageHandler>();
 
             services.AddRefitClient<IWeatherService>().ConfigureHttpClient(c => c.BaseAddress = baseAddress)
@@ -121,7 +129,8 @@ namespace mvcapp
             // первый самый гибкий способ, можно логировать и обрабатывать как захочется
             app.UseMiddleware(typeof(ErrorHandlingMiddleware));
 
-
+            app.UseMiddleware<CorrelationIdMiddleware>();
+            //  app.UseCorrelationId(); // adds the correlation ID middleware
 
             app.UseStaticFiles();
 
