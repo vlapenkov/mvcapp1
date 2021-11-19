@@ -80,7 +80,8 @@ namespace WebApi1
             IWebHostEnvironment env,
             IHostApplicationLifetime applicationLifetime)
         {
-
+            app.UseMiddleware<CorrelationIdMiddleware>();
+            app.UseMiddleware<CorrelationIdEnrichLogMiddleware>();
             app.UseMiddleware(typeof(ErrorHandlingMiddleware));
 
             // Enable middleware to serve generated Swagger as a JSON endpoint.
@@ -93,8 +94,7 @@ namespace WebApi1
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
             });
 
-            app.UseMiddleware<CorrelationIdMiddleware>();
-            app.UseMiddleware<CorrelationIdEnrichLogMiddleware>();
+
 
             //if (env.IsDevelopment())
             //{

@@ -23,7 +23,10 @@ namespace Shared.Problems
             this.Detail = "Некорректные данные";
             this.Status = (int)HttpStatusCode.BadRequest;
             this.Errors = errors;
-            //this.C
+
+
+
+
         }
     }
 }

@@ -55,7 +55,7 @@ namespace TNE.Common.Logger
                 .WriteTo.Console()
                 .WriteTo.File($"Logs/{applicationName}-{date}.txt",
                 Serilog.Events.LogEventLevel.Verbose,
-                "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{ServiceName}] [{Level}] {Message} {UserName} {CorrelationId} {ActionName} {TestUser}  {NewLine} {Exception}")
+                "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{ServiceName}] [{Level}] {CorrelationId} {Message} {UserName} {ActionName} {TestUser}  {NewLine} {Exception}")
             //.WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri(hostingContext.Configuration[uriPath]))
             //{
             //    AutoRegisterTemplate = true,

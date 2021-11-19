@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json.Converters;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json.Serialization;
@@ -20,6 +21,8 @@ namespace Shared
 
 
         public string Type { get; set; }
+
+        // [JsonConverter(typeof(StringEnumConverter))]
         public ErrorLevel ErrorLevel { get; set; }
 
         public int Status { get; set; }
@@ -27,7 +30,7 @@ namespace Shared
         public string Detail { get; set; }
         public string Instance { get; set; }
 
-        [JsonExtensionData]
-        public IDictionary<string, object> Extensions { get; } = new Dictionary<string, object>(StringComparer.Ordinal);
+        [Newtonsoft.Json.JsonExtensionData]
+        public virtual IDictionary<string, object> Extensions { get; set; } = new Dictionary<string, object>();
     }
 }

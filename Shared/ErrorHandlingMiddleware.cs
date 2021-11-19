@@ -55,19 +55,19 @@ namespace mvcapp
 
             };
 
-            // var resAsString = JsonConvert.SerializeObject(result);
+            var resAsString = JsonConvert.SerializeObject(problemDetails);
             // context.Items["Error"] = result;
             context.Response.ContentType = "application/problem+json";
             // context.Response.ContentType = "application/json";
 
-            //  context.Response.StatusCode = (int)problemDetails.Status;
-            // context.Response.WriteAsync(resAsString);
+            context.Response.StatusCode = (int)problemDetails.Status;
+            context.Response.WriteAsync(resAsString);
 
-            var routeData = context.GetRouteData() ?? new RouteData();
-            var emptyActionDescriptor = new ActionDescriptor();
-            var actionContext = new ActionContext(context, routeData, emptyActionDescriptor);
+            //var routeData = context.GetRouteData() ?? new RouteData();
+            //var emptyActionDescriptor = new ActionDescriptor();
+            //var actionContext = new ActionContext(context, routeData, emptyActionDescriptor);
 
-            await result.ExecuteResultAsync(actionContext);
+            //await result.ExecuteResultAsync(actionContext);
         }
 
 

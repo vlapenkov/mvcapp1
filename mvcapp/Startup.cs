@@ -127,10 +127,12 @@ namespace mvcapp
             ////app.UseCookiePolicy(new CookiePolicyOptions { MinimumSameSitePolicy = SameSiteMode.Lax });
             TryCatchExtensions.Handler = app.ApplicationServices.GetService<IExceptionHandler>();
             // первый самый гибкий способ, можно логировать и обрабатывать как захочется
-            app.UseMiddleware(typeof(ErrorHandlingMiddleware));
 
             app.UseMiddleware<CorrelationIdMiddleware>();
             app.UseMiddleware<CorrelationIdEnrichLogMiddleware>();
+            app.UseMiddleware(typeof(ErrorHandlingMiddleware));
+
+
             //  app.UseCorrelationId(); // adds the correlation ID middleware
 
             app.UseStaticFiles();

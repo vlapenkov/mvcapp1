@@ -2,12 +2,20 @@
   "iisSettings": {
     "windowsAuthentication": false,
     "anonymousAuthentication": true
-    
+
   },
-  "profiles": {    
-    "mvcapp": {
+  "profiles": {
+    "mvcapp.Dev": {
       "commandName": "Project",
-      "launchBrowser": true,
+      "launchUrl": "swagger",
+      "applicationUrl": "http://localhost:5000",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    },
+    "mvcapp.LocalIs4": {
+      "commandName": "Project",
+      "launchUrl": "swagger",
       "applicationUrl": "http://localhost:5000",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"

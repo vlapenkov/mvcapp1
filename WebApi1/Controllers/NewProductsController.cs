@@ -43,7 +43,7 @@ namespace WebApi1.Web.Controllers
         public async Task<IEnumerable<ProductDto>> GetProducts()
         {
             _logger.LogWarning("log from webapi {d}", DateTime.Now);
-            // throw new TneErrorException("exception message");
+            throw new TneErrorException("exception message");
             //throw new TneValidationException("exception message", "fio");
             var result = await _mediator.Send(new GetAllProductsQuery());
 
