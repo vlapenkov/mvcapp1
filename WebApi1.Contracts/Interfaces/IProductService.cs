@@ -7,9 +7,12 @@ using WebApi1.Contracts.Dto;
 
 namespace WebApi1.Contracts.Interfaces
 {
-   public interface IProductService
+    public interface IProductService
     {
         [Get("/api/products/getproducts")]
         Task<IEnumerable<ProductDto>> GetProducts();
+
+        [Get("/api/products/throwexception")]
+        Task<string> ThrowException();
     }
 }

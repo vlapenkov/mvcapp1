@@ -38,6 +38,7 @@ namespace mvcapp.Controllers
             _logger = logger;
         }
 
+        // GET http://localhost:5000/Products
         public async Task<IActionResult> Index()
         {
             //var accessToken = await HttpContext.GetTokenAsync("access_token");
@@ -55,12 +56,25 @@ namespace mvcapp.Controllers
 
         public async Task<IActionResult> Weather()
         {
-
+            /*
             var (weather, error) = await _weatherService.Get().TryCatch();
             if (error != null)
                 return Ok(error);
             else
-                return Ok(weather);
+                return Ok(weather); */
+
+            var weather = await _weatherService.Get();
+
+            return Ok(weather);
+
+        }
+
+        // GET http://localhost:5000/Products/ThrowException
+        public async Task<IActionResult> ThrowException()
+        {
+            var result = await _productService.ThrowException();
+
+            return Ok(result);
         }
     }
 }

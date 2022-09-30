@@ -39,15 +39,22 @@ namespace WebApi1.Web.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        //[Authorize]
+        [Authorize]
         public async Task<IEnumerable<ProductDto>> GetProducts()
         {
             _logger.LogWarning("log from webapi {d}", DateTime.Now);
-            throw new TneErrorException("exception message");
+
             //throw new TneValidationException("exception message", "fio");
             var result = await _mediator.Send(new GetAllProductsQuery());
 
             return result;
+        }
+
+        [AllowAnonymous]
+        [HttpGet]
+        public async Task<string> ThrowException()
+        {
+            throw new TneErrorException("exception message");
         }
 
         [HttpGet]
@@ -74,5 +81,7 @@ namespace WebApi1.Web.Controllers
             var email = User.Claims.FirstOrDefault(claim => claim.Type == ClaimTypes.Email);
             return name;
         }
+
+
     }
 }
